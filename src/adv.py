@@ -64,7 +64,7 @@ while True:
 
     if x == 'n':
         # print(room[player.current_room].n_to.name)
-        if room[player.current_room].n_to.name == None:
+        if room[player.current_room].n_to == None:
             print('nothing there')
         else:
             print('You move North')
