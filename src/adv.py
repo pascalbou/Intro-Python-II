@@ -62,44 +62,19 @@ player = Player('Player_One', 'outside')
 while True:
     print(f'You are at {player.current_room}')
     print(room[player.current_room].description)
+    choices = ['n', 'e', 's', 'w']
     x = input('move to ')
+    x_to = x+'_to'
 
-    if x == 'n':
-        if not hasattr(room[player.current_room], 'n_to'):
+    if x in choices:
+        if not hasattr(room[player.current_room], x_to):
             print('nothing there')
         else:
             print('You move North')
             for k, v in room.items():
-                if v == room[player.current_room].n_to:
+                if v == getattr(room[player.current_room], x_to):
                     player.set_current_room(k)
-                    break
-    if x == 'e':
-        if not hasattr(room[player.current_room], 'e_to'):
-            print('nothing there')
-        else:
-            print('You move East')
-            for k, v in room.items():
-                if v == room[player.current_room].e_to:
-                    player.set_current_room(k)
-                    break
-    if x == 's':
-        if not hasattr(room[player.current_room], 's_to'):
-            print('nothing there')
-        else:
-            print('You move South')
-            for k, v in room.items():
-                if v == room[player.current_room].s_to:
-                    player.set_current_room(k)
-                    break
-    if x == 'w':
-        if not hasattr(room[player.current_room], 'w_to'):
-            print('nothing there')
-        else:
-            print('You move West')
-            for k, v in room.items():
-                if v == room[player.current_room].w_to:
-                    player.set_current_room(k)
-                    break                                                
+                    break                                            
     elif x == 'q':
         sys.exit()
     else:
