@@ -6,3 +6,10 @@ class Room():
         self.name = name
         self.description = description
         self.items = ['sword', 'shield']
+
+    def describe(self):
+        print(f'You are at {self.name}')
+        print(self.description)
+
+    def check(self):
+        print(f'Items in this room : {self.items}')
