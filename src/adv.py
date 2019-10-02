@@ -44,7 +44,7 @@ room['treasure'].s_to = room['narrow']
 
 # Make a new player object that is currently in the 'outside' room.
 
-player = Player('Player_One', 'outside')
+player = Player('Player_One', room['outside'])
 
 # Declare all the items
 
@@ -86,44 +86,40 @@ item = {
 # If the user enters "q", quit the game.
 
 while True:
-    print(f'You are at {player.current_room}')
-    print(room[player.current_room].description)
-    print(f'Items in this room : {room[player.current_room].items}')
+    print(f'You are at {player.current_room.name}')
+    print(player.current_room.description)
+    print(f'Items in this room : {player.current_room.items}')
     choices = ['n', 'e', 's', 'w']
     actions = ['get', 'take', 'drop']
-    x = input('move to ')
-    x = x.split(' ')
-    # print(x)
+    cmd = input('move to ')
+    cmd = cmd.split(' ')
 
-    if x[0] == 'q':
+    if cmd[0] == 'q':
         sys.exit()
-    elif x[0] in choices:
-        x_to = x[0]+'_to'
-        if not hasattr(room[player.current_room], x_to):
+    elif cmd[0] in choices:
+        cmd_to = cmd[0]+'_to'
+        if not hasattr(player.current_room, cmd_to):
             print('nothing there')
         else:
             print('You move North')
-            for k, v in room.items():
-                if v == getattr(room[player.current_room], x_to):
-                    player.set_current_room(k)
-                    break
-    elif x[0] == 'i' or x[0] == 'inventory':
+            player.set_current_room(getattr(player.current_room, cmd_to))
+    elif cmd[0] == 'i' or cmd[0] == 'inventory':
         print(f'You carry {player.inventory}')
-    elif x[0] in actions:
-        if x[0] == 'get' or x[0] == 'take':
-            if x[1] in room[player.current_room].items:
-                room[player.current_room].items.remove(x[1])
-                player.inventory.append(x[1])
-                item[x[1]].on_take()
+    elif cmd[0] in actions:
+        if cmd[0] == 'get' or cmd[0] == 'take':
+            if cmd[1] in player.current_room.items:
+                player.current_room.items.remove(cmd[1])
+                player.inventory.append(cmd[1])
+                item[cmd[1]].on_take()
             else:
-                print(f'There is no {x[1]} in this room')
-        elif x[0] == 'drop':
-            if x[1] in player.inventory:
-                player.inventory.remove(x[1])
-                room[player.current_room].items.append(x[1])
-                item[x[1]].on_drop()
+                print(f'There is no {cmd[1]} in this room')
+        elif cmd[0] == 'drop':
+            if cmd[1] in player.inventory:
+                player.inventory.remove(cmd[1])
+                player.current_room.items.append(cmd[1])
+                item[cmd[1]].on_drop()
             else:
-                print(f'There is no {x[1]} in your inventory')            
+                print(f'There is no {cmd[1]} in your inventory')            
     else:
         print('type n, e, s or w to move or q to quit')
 
