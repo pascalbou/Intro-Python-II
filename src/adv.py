@@ -66,10 +66,13 @@ item = {
 # for k, v in item.items():
 #     all_items.append(k)
 
-# for _ in range(5):
+# for _ in range(0, 4):
 #     r0 = random.randint(1, len(room))
 #     r1 = random.randint(1, len(item))
-#     room[all_rooms[r0]].items.append(all_items[r1])
+#     # room[all_rooms[r0]].items.append(all_items[r1])
+#     # getattr(room[all_rooms[r0]], 'items').append(all_items[r1])
+#     print(getattr(room[all_rooms[r0]], 'items'))
+#     # print(all_items[r1])
 
 # Write a loop that:
 #
