@@ -1,3 +1,5 @@
+import sys
+
 from room import Room
 from player import Player
 
@@ -63,17 +65,44 @@ while True:
     x = input('move to ')
 
     if x == 'n':
-        # print(room[player.current_room].n_to.name)
-        if room[player.current_room].n_to == None:
+        if not hasattr(room[player.current_room], 'n_to'):
             print('nothing there')
         else:
             print('You move North')
-            # print(room[player.current_room].n_to)
             for k, v in room.items():
                 if v == room[player.current_room].n_to:
                     player.set_current_room(k)
-                    # print(k)
                     break
-            print(player.current_room)
+    if x == 'e':
+        if not hasattr(room[player.current_room], 'e_to'):
+            print('nothing there')
+        else:
+            print('You move East')
+            for k, v in room.items():
+                if v == room[player.current_room].e_to:
+                    player.set_current_room(k)
+                    break
+    if x == 's':
+        if not hasattr(room[player.current_room], 's_to'):
+            print('nothing there')
+        else:
+            print('You move South')
+            for k, v in room.items():
+                if v == room[player.current_room].s_to:
+                    player.set_current_room(k)
+                    break
+    if x == 'w':
+        if not hasattr(room[player.current_room], 'w_to'):
+            print('nothing there')
+        else:
+            print('You move West')
+            for k, v in room.items():
+                if v == room[player.current_room].w_to:
+                    player.set_current_room(k)
+                    break                                                
+    elif x == 'q':
+        sys.exit()
     else:
         print('type n, e, s or w')
+
+    print('\n')
