@@ -69,7 +69,7 @@ for _ in range(0, 4):
 
 done = False
 choices = ['n', 'e', 's', 'w']
-actions = ['get', 'take', 'drop', 'check']
+actions = ['get', 'take', 'pick', 'drop', 'check']
 directions = {'n': 'North', 'e': 'East', 's': 'Sud', 'w': 'West'}
 
 
@@ -125,7 +125,7 @@ while not done:
     elif cmd_v == 'i' or cmd_v == 'inventory':
         print(f'You carry {player.inventory}')
     elif cmd_v in actions:
-        if cmd_v == 'get' or cmd_v == 'take':
+        if cmd_v in actions[:3]:
             pick(cmd[1])
         elif cmd_v == 'drop':
             drop(cmd[1])
