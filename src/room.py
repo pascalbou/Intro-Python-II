@@ -5,7 +5,7 @@ class Room():
     def __init__(self, name, description):
         self.name = name
         self.description = description
-        self.items = ['sword', 'shield']
+        self.items = []
 
     def describe(self):
         print(f'You are at {self.name}')

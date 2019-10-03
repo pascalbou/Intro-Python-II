@@ -58,21 +58,13 @@ item = {
 
 # Place items in rooms randomly
 
-# all_rooms = []
-# all_items = []
+def get_random_int(range):
+    return random.randint(1, range)
 
-# for k, v in room.items():
-#     all_rooms.append(k)
-# for k, v in item.items():
-#     all_items.append(k)
-
-# for _ in range(0, 4):
-#     r0 = random.randint(1, len(room))
-#     r1 = random.randint(1, len(item))
-#     # room[all_rooms[r0]].items.append(all_items[r1])
-#     # getattr(room[all_rooms[r0]], 'items').append(all_items[r1])
-#     print(getattr(room[all_rooms[r0]], 'items'))
-#     # print(all_items[r1])
+for _ in range(0, 4):
+    rand_room = random.choice(list(room.keys()))
+    rand_item = random.choice(list(item.keys()))
+    room[rand_room].add_item(rand_item)
 
 
 done = False
@@ -98,15 +90,15 @@ def move_player(room, cmd):
 
 
 def pick(obj):
-    if cmd_obj in player.current_room.items:
+    if obj in player.current_room.items:
         player.current_room.remove_item(obj)
         player.pick_item(obj)
-        item[obj].on_take()
+        item[obj].on_pick()
     else:
         print(f'There is no {obj} in this room')
 
 def drop(obj):
-    if cmd_obj in player.inventory:
+    if obj in player.inventory:
         player.drop_item(obj)
         player.current_room.add_item(obj)
         item[obj].on_drop()        
@@ -125,9 +117,7 @@ while not done:
     cmd = get_command()
     # command verb, first input
     cmd_v = cmd[0]
-    # command object, second input
-    cmd_obj = cmd[1]
-
+    
     if cmd_v == 'q':
         done = True
     elif cmd_v in choices:
@@ -136,9 +126,9 @@ while not done:
         print(f'You carry {player.inventory}')
     elif cmd_v in actions:
         if cmd_v == 'get' or cmd_v == 'take':
-            pick(cmd_obj)
+            pick(cmd[1])
         elif cmd_v == 'drop':
-            drop(cmd_obj)
+            drop(cmd[1])
         elif cmd_v == 'check':
             player.current_room.check()
     else:
