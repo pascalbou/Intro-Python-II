@@ -74,16 +74,6 @@ item = {
 #     print(getattr(room[all_rooms[r0]], 'items'))
 #     # print(all_items[r1])
 
-# Write a loop that:
-#
-# * Prints the current room name
-# * Prints the current description (the textwrap module might be useful here).
-# * Waits for user input and decides what to do.
-#
-# If the user enters a cardinal direction, attempt to move to the room there.
-# Print an error message if the movement isn't allowed.
-#
-# If the user enters "q", quit the game.
 
 done = False
 choices = ['n', 'e', 's', 'w']
@@ -153,3 +143,18 @@ while not done:
             player.current_room.check()
     else:
         get_help()
+
+
+
+
+
+# Write a loop that:
+#
+# * Prints the current room name
+# * Prints the current description (the textwrap module might be useful here).
+# * Waits for user input and decides what to do.
+#
+# If the user enters a cardinal direction, attempt to move to the room there.
+# Print an error message if the movement isn't allowed.
+#
+# If the user enters "q", quit the game.
