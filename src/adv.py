@@ -72,7 +72,7 @@ for _ in range(0, 4):
 game_over = False
 choices = ['n', 'e', 's', 'w']
 actions = ['get', 'take', 'pick', 'drop', 'check']
-directions = {'n': 'North', 'e': 'East', 's': 'Sud', 'w': 'West'}
+directions = {'n': 'North', 'e': 'East', 's': 'South', 'w': 'West'}
 
 
 def get_command():
