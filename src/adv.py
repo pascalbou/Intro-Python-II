@@ -106,38 +106,50 @@ def move_player(room, cmd):
     else:
         print('nothing there')
 
+
+def pick(obj):
+    if cmd_obj in player.current_room.items:
+        player.current_room.remove_item(obj)
+        player.pick_item(obj)
+        item[obj].on_take()
+    else:
+        print(f'There is no {obj} in this room')
+
+def drop(obj):
+    if cmd_obj in player.inventory:
+        player.drop_item(obj)
+        player.current_room.add_item(obj)
+        item[obj].on_drop()        
+    else:
+        print(f'There is no {obj} in your inventory')
+
+def get_help():
+    print('type n, e, s or w to move or q to quit')
+
+#first description on game start
 player.current_room.describe()
 player.current_room.check()
 
 
 while not done:
-
     cmd = get_command()
-    # print('')
+    # command verb, first input
+    cmd_v = cmd[0]
+    # command object, second input
+    cmd_obj = cmd[1]
 
-    if cmd[0] == 'q':
+    if cmd_v == 'q':
         done = True
-    elif cmd[0] in choices:
-        move_player(player.current_room, cmd[0])
-    elif cmd[0] == 'i' or cmd[0] == 'inventory':
+    elif cmd_v in choices:
+        move_player(player.current_room, cmd_v)
+    elif cmd_v == 'i' or cmd_v == 'inventory':
         print(f'You carry {player.inventory}')
-    elif cmd[0] in actions:
-        if cmd[0] == 'get' or cmd[0] == 'take':
-            if cmd[1] in player.current_room.items:
-                player.current_room.items.remove(cmd[1])
-                player.inventory.append(cmd[1])
-                item[cmd[1]].on_take()
-            else:
-                print(f'There is no {cmd[1]} in this room')
-        elif cmd[0] == 'drop':
-            if cmd[1] in player.inventory:
-                player.inventory.remove(cmd[1])
-                player.current_room.items.append(cmd[1])
-                item[cmd[1]].on_drop()
-            else:
-                print(f'There is no {cmd[1]} in your inventory')
-        elif cmd[0] == 'check':
+    elif cmd_v in actions:
+        if cmd_v == 'get' or cmd_v == 'take':
+            pick(cmd_obj)
+        elif cmd_v == 'drop':
+            drop(cmd_obj)
+        elif cmd_v == 'check':
             player.current_room.check()
     else:
-        print('type n, e, s or w to move or q to quit')
-
+        get_help()

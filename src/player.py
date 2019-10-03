@@ -10,4 +10,8 @@ class Player():
     def set_current_room(self, current_room):
         self.current_room = current_room
 
-    # def take_item(self, item):
+    def pick_item(self, item):
+        self.inventory.append(item)
+
+    def drop_item(self, item):
+        self.inventory.remove(item)        
