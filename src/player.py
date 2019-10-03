@@ -9,3 +9,5 @@ class Player():
             
     def set_current_room(self, current_room):
         self.current_room = current_room
+
+    # def take_item(self, item):

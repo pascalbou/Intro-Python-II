@@ -85,48 +85,59 @@ item = {
 #
 # If the user enters "q", quit the game.
 
+done = False
+choices = ['n', 'e', 's', 'w']
+actions = ['get', 'take', 'drop', 'check']
+directions = {'n': 'North', 'e': 'East', 's': 'Sud', 'w': 'West'}
 
-while True:
-    player.current_room.describe()
-    player.current_room.check()
-    
-    choices = ['n', 'e', 's', 'w']
-    actions = ['get', 'take', 'drop', 'check']
-    cmd = input('action ').split(' ')
-    cmd_to = cmd[0]+'_to'
 
-    while cmd[0] not in choices:
-        if cmd[0] == 'q':
-            sys.exit()
-        elif cmd[0] == 'i' or cmd[0] == 'inventory':
-            print(f'You carry {player.inventory}')
-        elif cmd[0] in actions:
-            if cmd[0] == 'get' or cmd[0] == 'take':
-                if cmd[1] in player.current_room.items:
-                    player.current_room.items.remove(cmd[1])
-                    player.inventory.append(cmd[1])
-                    item[cmd[1]].on_take()
-                else:
-                    print(f'There is no {cmd[1]} in this room')
-            elif cmd[0] == 'drop':
-                if cmd[1] in player.inventory:
-                    player.inventory.remove(cmd[1])
-                    player.current_room.items.append(cmd[1])
-                    item[cmd[1]].on_drop()
-                else:
-                    print(f'There is no {cmd[1]} in your inventory')
-            elif cmd[0] == 'check':
-                player.current_room.check()            
-        else:
-            print('type n, e, s or w to move or q to quit')
-        cmd = input('action ').split(' ')
-        cmd_to = cmd[0]+'_to'
+def get_command():
+    return input('Command> ').lower().split(' ')
 
-    if cmd[0] in choices:
-        if not hasattr(player.current_room, cmd_to):
-            print('nothing there')
-        else:
-            print(f'You move to {cmd_to}')
-            player.set_current_room(getattr(player.current_room, cmd_to)) 
 
-    print('\n')
+def move_player(room, cmd):
+    cmd_to = cmd + '_to'
+    if hasattr(room, cmd_to):
+        print(f'You move {directions[cmd]}')
+        player.set_current_room(getattr(room, cmd_to))
+        player.current_room.describe()
+        player.current_room.check()
+        print('')
+    else:
+        print('nothing there')
+
+player.current_room.describe()
+player.current_room.check()
+
+
+while not done:
+
+    cmd = get_command()
+    # print('')
+
+    if cmd[0] == 'q':
+        done = True
+    elif cmd[0] in choices:
+        move_player(player.current_room, cmd[0])
+    elif cmd[0] == 'i' or cmd[0] == 'inventory':
+        print(f'You carry {player.inventory}')
+    elif cmd[0] in actions:
+        if cmd[0] == 'get' or cmd[0] == 'take':
+            if cmd[1] in player.current_room.items:
+                player.current_room.items.remove(cmd[1])
+                player.inventory.append(cmd[1])
+                item[cmd[1]].on_take()
+            else:
+                print(f'There is no {cmd[1]} in this room')
+        elif cmd[0] == 'drop':
+            if cmd[1] in player.inventory:
+                player.inventory.remove(cmd[1])
+                player.current_room.items.append(cmd[1])
+                item[cmd[1]].on_drop()
+            else:
+                print(f'There is no {cmd[1]} in your inventory')
+        elif cmd[0] == 'check':
+            player.current_room.check()
+    else:
+        print('type n, e, s or w to move or q to quit')
+
