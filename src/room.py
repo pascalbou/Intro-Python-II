@@ -2,14 +2,19 @@
 # description attributes.
 
 class Room():
-    def __init__(self, name, description):
+    def __init__(self, name, description, is_light = True):
         self.name = name
         self.description = description
+        self.is_light = is_light
         self.items = []
 
-    def describe(self):
-        print(f'You are at {self.name}')
-        print(self.description)
+    def describe(self, lamp = False):
+        if self.is_light or lamp:
+            print(f'You are at {self.name}')
+            print(self.description)
+            self.check()
+        else:
+            print(f'It is too dark. You cannot see anything. Find a source of light.')
 
     def check(self):
         print(f'Items in this room : {self.items}')

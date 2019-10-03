@@ -3,7 +3,7 @@ import random
 
 from room import Room
 from player import Player
-from item import Item
+from item import Item, Lightsource
 
 # Declare all the rooms
 
@@ -19,11 +19,11 @@ into the darkness. Ahead to the north, a light flickers in
 the distance, but there is no way across the chasm."""),
 
     'narrow':   Room("Narrow Passage", """The narrow passage bends here from west
-to north. The smell of gold permeates the air."""),
+to north. The smell of gold permeates the air.""", is_light = False),
 
     'treasure': Room("Treasure Chamber", """You've found the long-lost treasure
 chamber! Sadly, it has already been completely emptied by
-earlier adventurers."""),
+earlier adventurers.""", is_light = False),
 
     'empty': Room("Empty Room", """You walked into an room that seems empty at first glance. To the east is a passage.""")
 }
@@ -57,13 +57,11 @@ item = {
     'sword': Item('Sword', 'shiny sword'),
     'shield': Item('Shield', 'wooden shield'),
     'hammer': Item('Hammer', 'rusty hammer'),
-    'staff': Item('Staff', 'magical staff of ice'),
+    'staff': Item('Staff', 'magical staff of fire'),
+    'lamp': Lightsource('Lamp', 'a source of light')
 }
 
 # Place items in rooms randomly
-
-def get_random_int(range):
-    return random.randint(1, range)
 
 for _ in range(0, 4):
     rand_room = random.choice(list(room.keys()))
@@ -86,8 +84,7 @@ def move_player(room, cmd):
     if hasattr(room, cmd_to):
         print(f'You move {directions[cmd]}')
         player.set_current_room(getattr(room, cmd_to))
-        player.current_room.describe()
-        player.current_room.check()
+        player.current_room.describe(lamp = 'lamp' in player.inventory)
         if player.current_room.name == 'Treasure Chamber':
             global game_over
             game_over = True
@@ -117,8 +114,7 @@ def get_help():
 
 #first description on game start
 player.current_room.describe()
-player.current_room.check()
-
+room['empty'].add_item('lamp')
 
 while not game_over:
     cmd = get_command()
