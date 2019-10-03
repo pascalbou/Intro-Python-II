@@ -8,10 +8,10 @@ from item import Item
 # Declare all the rooms
 
 room = {
-    'outside':  Room("Outside Cave Entrance",
+    'outside': Room("Outside Cave Entrance",
                      "North of you, the cave mount beckons"),
 
-    'foyer':    Room("Foyer", """Dim light filters in from the south. Dusty
+    'foyer': Room("Foyer", """Dim light filters in from the south. Dusty
 passages run north and east."""),
 
     'overlook': Room("Grand Overlook", """A steep cliff appears before you, falling
@@ -23,7 +23,9 @@ to north. The smell of gold permeates the air."""),
 
     'treasure': Room("Treasure Chamber", """You've found the long-lost treasure
 chamber! Sadly, it has already been completely emptied by
-earlier adventurers. The only exit is to the south."""),
+earlier adventurers."""),
+
+    'empty': Room("Empty Room", """You walked into an room that seems empty at first glance. To the east is a passage.""")
 }
 
 
@@ -33,7 +35,9 @@ room['outside'].n_to = room['foyer']
 room['foyer'].s_to = room['outside']
 room['foyer'].n_to = room['overlook']
 room['foyer'].e_to = room['narrow']
+room['foyer'].w_to = room['empty']
 room['overlook'].s_to = room['foyer']
+room['empty'].e_to = room['foyer']
 room['narrow'].w_to = room['foyer']
 room['narrow'].n_to = room['treasure']
 room['treasure'].s_to = room['narrow']
@@ -67,7 +71,7 @@ for _ in range(0, 4):
     room[rand_room].add_item(rand_item)
 
 
-done = False
+game_over = False
 choices = ['n', 'e', 's', 'w']
 actions = ['get', 'take', 'pick', 'drop', 'check']
 directions = {'n': 'North', 'e': 'East', 's': 'Sud', 'w': 'West'}
@@ -84,6 +88,9 @@ def move_player(room, cmd):
         player.set_current_room(getattr(room, cmd_to))
         player.current_room.describe()
         player.current_room.check()
+        if player.current_room.name == 'Treasure Chamber':
+            global game_over
+            game_over = True
         print('')
     else:
         print('nothing there')
@@ -113,13 +120,13 @@ player.current_room.describe()
 player.current_room.check()
 
 
-while not done:
+while not game_over:
     cmd = get_command()
     # command verb, first input
     cmd_v = cmd[0]
     
     if cmd_v == 'q':
-        done = True
+        game_over = True
     elif cmd_v in choices:
         move_player(player.current_room, cmd_v)
     elif cmd_v == 'i' or cmd_v == 'inventory':
